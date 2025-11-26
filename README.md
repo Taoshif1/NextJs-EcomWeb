@@ -1,5 +1,7 @@
 # ShopHub - Modern E-commerce Platform
 
+🔗 **Live Demo:** [SHOPHUB](https://next-js-ecom-web.vercel.app/)
+
 A full-stack e-commerce application built with Next.js 16 (App Router), featuring authentication, product management and a polished responsive UI.
 
 ## 🚀 Features

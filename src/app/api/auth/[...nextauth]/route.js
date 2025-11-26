@@ -11,17 +11,21 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       profile(profile) {
-      return {
-        id: profile.sub,
-        name: profile.name,
-        email: profile.email,
-        image: profile.picture,
-        provider: "google"
-      };
-    }
-  }),
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          provider: "google"
+        };
+      }
+    }),
     CredentialsProvider({
       name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
       async authorize(credentials) {
         await connectDB();
         const user = await User.findOne({ email: credentials.email });
@@ -31,14 +35,17 @@ export const authOptions = {
         const isMatch = await bcrypt.compare(credentials.password, user.password);
         if (!isMatch) return null;
 
-        return { id: user._id, name: user.name, email: user.email };
+        return { 
+          id: user._id.toString(), 
+          name: user.name, 
+          email: user.email 
+        };
       }
     })
   ],
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
-
-   callbacks: {
+  callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
@@ -46,13 +53,15 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (session?.user) {
         session.user.id = token.id;
       }
       return session;
     }
+  },
+  pages: {
+    signIn: "/login"
   }
-  
 };
 
 const handler = NextAuth(authOptions);
