@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from '../lib/mongodb';
 
 // User Schema - defines what data we store for each user
 const UserSchema = new mongoose.Schema({
@@ -13,6 +13,8 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    // When using credentials, we need the password field to be retrievable
+    // for bcrypt comparison, so we don't use 'select: false' here.
   },
   image: {
     type: String,
@@ -28,5 +30,5 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-// Export the model
+// Use existing model or compile a new one
 export default mongoose.models.User || mongoose.model('User', UserSchema);

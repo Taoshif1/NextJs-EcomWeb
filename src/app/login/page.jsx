@@ -1,27 +1,64 @@
 "use client";
-
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false
+    });
+
+    if (!res.ok) {
+      setError("Invalid email or password");
+      return;
+    }
+
+    router.push("/");
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-gray-700 p-6 shadow-md rounded space-y-4">
-        <h1 className="text-3xl font-bold">Login</h1>
+    <>
+      <Navbar />
 
-        <button
-          onClick={() => signIn("google")}
-          className="w-full bg-red-500 text-white p-3 rounded"
-        >
-          Login with Google
-        </button>
+      <div className="min-h-screen flex items-center justify-center text-black bg-gray-100 px-4">
+        <div className="bg-gray-200 p-8 rounded-xl shadow-xl max-w-md w-full">
+          <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
 
-        <button
-          onClick={() => signIn("credentials")}
-          className="w-full bg-black text-white p-3 rounded"
-        >
-          Login with Email
-        </button>
+          {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+
+          <form onSubmit={handleSubmit} className="font-black space-y-4">
+            <input name="email" type="email" required placeholder="Email" className="input" />
+            <input name="password" type="password" required placeholder="Password" className="input" />
+
+            <button className="w-full bg-blue-600 text-white py-2 rounded-lg">
+              Login
+            </button>
+          </form>
+
+          <button
+            onClick={() => signIn("google")}
+            className="w-full mt-4 bg-red-500 text-white py-2 rounded-lg"
+          >
+            Continue with Google
+          </button>
+        </div>
       </div>
-    </div>
+
+      <Footer />
+    </>
   );
 }
