@@ -19,7 +19,7 @@ export default function LoginPage() {
     const res = await signIn("credentials", {
       email,
       password,
-      redirect: false
+      redirect: false,
     });
 
     if (!res.ok) {
@@ -27,7 +27,9 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/");
+    const callbackUrl =
+      new URLSearchParams(window.location.search).get("callbackUrl") || "/";
+    router.push(callbackUrl);
   }
 
   return (
@@ -41,8 +43,20 @@ export default function LoginPage() {
           {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
 
           <form onSubmit={handleSubmit} className="font-black space-y-4">
-            <input name="email" type="email" required placeholder="Email" className="input" />
-            <input name="password" type="password" required placeholder="Password" className="input" />
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="Email"
+              className="input"
+            />
+            <input
+              name="password"
+              type="password"
+              required
+              placeholder="Password"
+              className="input"
+            />
 
             <button className="w-full bg-blue-600 text-white py-2 rounded-lg">
               Login

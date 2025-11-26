@@ -35,7 +35,7 @@ export default function RegisterPage() {
     }
 
     setSuccess("Registration successful! Redirecting...");
-    setTimeout(() => router.push("/login"), 2000);
+    setTimeout(() => router.push("/login?registered=1"), 2000);
   }
 
   return (

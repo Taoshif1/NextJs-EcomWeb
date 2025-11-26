@@ -4,7 +4,7 @@ import Footer from "@/app/components/Footer";
 
 async function getProducts() {
   try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/products`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
       cache: 'no-store'
     });
     
@@ -13,7 +13,7 @@ async function getProducts() {
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.log('Error fetching products:', error);
     return { products: [] };
   }
 }

@@ -16,7 +16,7 @@ export default function ProductDetails({ params }) {
         const res = await fetch(`/api/products/${params.id}`);
         if (res.ok) {
           const data = await res.json();
-          setProduct(data.product);
+          return Response.json({ product });
         }
       } catch (error) {
         console.error('Error fetching product:', error);
