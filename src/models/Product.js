@@ -11,7 +11,8 @@ const ProductSchema = new mongoose.Schema(
       default:
         "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
     },
-    category: { type: String, default: "General" }
+    category: { type: String, default: "General" },
+     createdBy: { type: String, required: true }
   },
   { timestamps: true }
 );

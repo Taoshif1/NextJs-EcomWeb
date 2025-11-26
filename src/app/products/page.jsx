@@ -4,16 +4,19 @@ import Footer from "@/app/components/Footer";
 
 async function getProducts() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
-      cache: 'no-store'
-    });
-    
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
+      {
+        cache: "no-store",
+      }
+    );
+
     if (!res.ok) return { products: [] };
-    
+
     const data = await res.json();
     return data;
   } catch (error) {
-    console.log('Error fetching products:', error);
+    console.log("Error fetching products:", error);
     return { products: [] };
   }
 }
@@ -52,21 +55,30 @@ export default async function ProductsPage() {
 
           {/* Category Filter (UI Only) */}
           <div className="flex justify-center mb-8 gap-3 flex-wrap">
-            {['All', 'Electronics', 'Fashion', 'Home', 'Sports'].map((category) => (
-              <button
-                key={category}
-                className="px-6 py-2 bg-white border border-gray-300 rounded-full text-black hover:bg-blue-50 hover:border-blue-500 transition"
-              >
-                {category}
-              </button>
-            ))}
+            {["All", "Electronics", "Fashion", "Home", "Sports"].map(
+              (category) => (
+                <button
+                  key={category}
+                  className="px-6 py-2 bg-white border border-gray-300 rounded-full text-black hover:bg-blue-50 hover:border-blue-500 transition"
+                >
+                  {category}
+                </button>
+              )
+            )}
           </div>
 
           {/* Products Grid */}
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 font-black">
               {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
+                <ProductCard
+                  key={product._id}
+                  id={product._id}
+                  title={product.title}
+                  description={product.shortDescription}
+                  price={product.price}
+                  imageUrl={product.imageUrl}
+                />
               ))}
             </div>
           ) : (
